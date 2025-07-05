@@ -8,6 +8,8 @@ const shareBtn = document.getElementById("shareBtn");
 const doctorIdInput = document.getElementById("doctorId");
 const usernameInput = document.getElementById("username");
 
+let selectedFile = null;
+
 function toast(msg, isError = false) {
   const d = document.createElement("div");
   d.textContent = msg;
@@ -23,10 +25,10 @@ function toast(msg, isError = false) {
   setTimeout(() => d.remove(), 4000);
 }
 
-imageInput.addEventListener("change", async (e) => {
+imageInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (!file) return;
-
+  selectedFile = file;
   // preview
   const reader = new FileReader();
   reader.onload = () => {
@@ -39,21 +41,24 @@ imageInput.addEventListener("change", async (e) => {
   reader.readAsDataURL(file);
   fileNameEl.textContent = `File: ${file.name}`;
   fileNameEl.style.display = "block";
+  shareBtn.style.display = "block";
+});
 
-  // read as base64
-  const b64 = await new Promise((res) => {
-    const fr = new FileReader();
-    fr.onload = () => res(fr.result.split(",")[1]);
-    fr.readAsDataURL(file);
-  });
-
+shareBtn.addEventListener("click", async () => {
+  if (!selectedFile) return toast("Choose a file first", true);
+  shareBtn.disabled = true;
   try {
+    const b64 = await new Promise((res) => {
+      const fr = new FileReader();
+      fr.onload = () => res(fr.result.split(",")[1]);
+      fr.readAsDataURL(selectedFile);
+    });
     const resp = await fetch("/.netlify/functions/upload", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        fileName: file.name,
-        mimeType: file.type,
+        fileName: selectedFile.name,
+        mimeType: selectedFile.type,
         data: b64,
         doctorId: doctorIdInput.value,
         username: usernameInput.value,
@@ -64,11 +69,13 @@ imageInput.addEventListener("change", async (e) => {
     const url = `https://gateway.pinata.cloud/ipfs/${cid}`;
     cidDisplay.textContent = url;
     cidDisplay.style.display = "block";
-    shareBtn.style.display = "none"; // link already shown
     await navigator.clipboard.writeText(url);
     toast("Link copied to clipboard!");
+    shareBtn.style.display = "none";
   } catch (err) {
     console.error(err);
     toast("Upload failed", true);
+  } finally {
+    shareBtn.disabled = false;
   }
 }); 
