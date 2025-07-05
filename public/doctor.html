@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Doctor Portal – MediShare</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f7f7f7; margin:0; padding:0; }
+    .container { max-width: 600px; margin: 40px auto; background:#fff; padding:24px; border-radius:8px; box-shadow:0 4px 8px rgba(0,0,0,.08); }
+    h1 { text-align:center; }
+    input { width:100%; padding:10px; border:1px solid #ccc; border-radius:4px; }
+    button { margin-top:12px; padding:10px 16px; background:#007bff; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+    table { width:100%; margin-top:24px; border-collapse:collapse; }
+    th, td { border:1px solid #e0e0e0; padding:8px; text-align:left; }
+    th { background:#f0f0f0; }
+    a { color:#007bff; word-break:break-all; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Doctor Portal</h1>
+    <input type="text" id="doctorId" placeholder="Enter your Doctor ID" />
+    <button id="fetchBtn">Fetch Files</button>
+
+    <table id="results" style="display:none;">
+      <thead>
+        <tr><th>File Name</th><th>Uploaded By</th><th>Date</th><th>Link</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script src="doctor.js"></script>
+</body>
+</html> 
