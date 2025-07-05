@@ -20,9 +20,11 @@ exports.handler = async (event) => {
     const metadata = JSON.stringify({ name: fileName, keyvalues: { doctorId, username } });
     form.append("pinataMetadata", metadata);
 
+    const authHeader = process.env.PINATA_JWT?.startsWith("Bearer ") ? process.env.PINATA_JWT : `Bearer ${process.env.PINATA_JWT}`;
+
     const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
       method: "POST",
-      headers: { Authorization: process.env.PINATA_JWT },
+      headers: { Authorization: authHeader },
       body: form,
     });
 
