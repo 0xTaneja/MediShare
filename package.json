@@ -1,0 +1,22 @@
+{
+  "name": "medishare",
+  "version": "1.0.0",
+  "description": "Secure patient file sharing web app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "vite --root public",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "vite": "^7.0.2"
+  },
+  "dependencies": {
+    "form-data": "^4.0.3",
+    "node-fetch": "^3.3.2"
+  }
+}
